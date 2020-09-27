@@ -19,7 +19,7 @@ def get_table_dict(selector):
     return bdict
 
 
-with open('../../visited_urls.txt', 'r') as f:
+with open('visited_urls.txt', 'r') as f:
     visited_urls = f.readlines()
 
 
