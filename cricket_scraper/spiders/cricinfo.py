@@ -1,5 +1,4 @@
 from abc import ABC
-
 import scrapy
 
 
@@ -17,10 +16,6 @@ def get_table_dict(selector):
                 f"{t.strip().replace('-', '_').replace(' ', '')}_{c.strip()}")
     bdict = {name: value for name, value in zip(names, data)}
     return bdict
-
-
-with open('visited_urls.txt', 'r') as f:
-    visited_urls = f.readlines()
 
 
 class CricketSpider(scrapy.Spider, ABC):
@@ -53,12 +48,10 @@ class CricketSpider(scrapy.Spider, ABC):
     def parse_names(self, response):
         for href in response.xpath(
                 "//td[@class='ciPlayernames']/a/@href").getall():
-            url = response.urljoin(href)
-            if url not in visited_urls:
-                yield scrapy.Request(
-                    url=url,
-                    callback=self.parse_players
-                )
+            yield scrapy.Request(
+                url=response.urljoin(href),
+                callback=self.parse_players
+            )
 
     def parse_players(self, response):
         infd = {
